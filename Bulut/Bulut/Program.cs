@@ -18,7 +18,13 @@ class Program
         bool threeIntersecting = CheckThreeIntersectingCircles(circles);
         Console.WriteLine($"Uchta kesishuvchi aylana mavjudmi? {threeIntersecting}");
 
-
+        // b) Alohida turgan aylanalarning ro'yxati:
+        List<Circle> isolatedCircles = FindIsolatedCircles(circles);
+        Console.WriteLine("Alohida turgan aylanalarning koordinatalari va radiuslari:");
+        foreach (var circle in isolatedCircles)
+        {
+            Console.WriteLine($"Markaz: ({circle.X}, {circle.Y}), Radius: {circle.Radius}");
+        }
     }
 
     // Aylana sinfi
@@ -59,5 +65,30 @@ class Program
             }
         }
         return false;
+    }
+
+    // b) Alohida turgan aylanalarning ro'yxatini topish
+    static List<Circle> FindIsolatedCircles(List<Circle> circles)
+    {
+        List<Circle> isolated = new List<Circle>();
+
+        foreach (var circle in circles)
+        {
+            bool isIsolated = true;
+            foreach (var other in circles)
+            {
+                if (circle != other && circle.Intersects(other))
+                {
+                    isIsolated = false;
+                    break;
+                }
+            }
+            if (isIsolated)
+            {
+                isolated.Add(circle);
+            }
+        }
+
+        return isolated;
     }
 }
